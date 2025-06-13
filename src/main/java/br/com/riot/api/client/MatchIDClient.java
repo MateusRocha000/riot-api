@@ -1,8 +1,6 @@
 package br.com.riot.api.client;
 
 import br.com.riot.api.config.RiotFeignConfig;
-import br.com.riot.api.entity.Match;
-import br.com.riot.api.entity.MatchID;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(url = "${api.base.url}", name = "matchClient", configuration = RiotFeignConfig.class)
-public interface MatchClient {
+@FeignClient(url = "${api.base.url}", name = "matchIdClient", configuration = RiotFeignConfig.class)
+public interface MatchIDClient {
 
     @GetMapping(path = "/lol/match/v5/matches/by-puuid/{puuid}/ids")
     List<String> getAllMatchesByPlayerUUID(
@@ -19,10 +17,5 @@ public interface MatchClient {
             @RequestParam("queue") int queue,
             @RequestParam("start") int start,
             @RequestParam("count") int count
-    );
-
-    @GetMapping(path = "/lol/match/v5/matches/{matchId}")
-    Match getMatchById(
-            @PathVariable("matchId") String matchID
     );
 }
