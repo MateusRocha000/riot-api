@@ -1,28 +1,18 @@
 package br.com.riot.api.client;
 
-import br.com.riot.api.config.RiotFeignConfig;
-import br.com.riot.api.entity.Match;
-import br.com.riot.api.entity.MatchID;
+import br.com.riot.api.config.RiotClientConfig;
+import br.com.riot.api.dto.match.MatchIDsResponseDTO;
+import br.com.riot.api.dto.match.MatchResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
-@FeignClient(url = "${api.base.url}", name = "matchClient", configuration = RiotFeignConfig.class)
+@FeignClient(url = "${riot.api.match.base-url}", name = "riot-matches", configuration = RiotClientConfig.class)
 public interface MatchClient {
 
-    @GetMapping(path = "/lol/match/v5/matches/by-puuid/{puuid}/ids")
-    List<String> getAllMatchesByPlayerUUID(
-            @PathVariable("puuid") String puuid,
-            @RequestParam("queue") int queue,
-            @RequestParam("start") int start,
-            @RequestParam("count") int count
-    );
+    @GetMapping(path = "/by-puuid/{puuid}/ids")
+    MatchIDsResponseDTO listAllIdsByPuuid(@PathVariable String puuid);
 
-    @GetMapping(path = "/lol/match/v5/matches/{matchId}")
-    Match getMatchById(
-            @PathVariable("matchId") String matchID
-    );
+    @GetMapping(path = "{matchId}")
+    MatchResponseDTO getMatchById(@PathVariable String matchId);
 }
